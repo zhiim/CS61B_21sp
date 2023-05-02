@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author Q Xu
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -137,7 +137,15 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+        // Board.size() will return the number of columns in a Board object
+        int board_size = b.size();
+        for (int i = 0; i < board_size; i++) {
+            for (int j = 0; j < board_size; j++) {
+                if (b.tile(i, j) == null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -147,7 +155,16 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+        int board_size = b.size();
+        for (int i = 0; i < board_size; i++) {
+            for (int j = 0; j < board_size; j++) {
+                if (b.tile(i, j) != null) {
+                    if (b.tile(i, j).value() == MAX_PIECE) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
@@ -158,7 +175,40 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        return emptySpaceExists(b) || withAdjacentTiles(b);
+    }
+
+    /**
+     * Return true if there is at least one empty space on the board.
+     */
+    public static boolean withAdjacentTiles(Board b) {
+        int board_size = b.size();
+        for (int i = 0; i < board_size; i++) {
+            for (int j = 0; j < board_size; j++) {
+               if (i > 0) {
+                   if (b.tile(i - 1, j).value() ==
+                           b.tile(i, j).value()) {
+                       return true;
+                   }
+                   if (i < board_size - 1 &&
+                           b.tile(i + 1, j).value() ==
+                                   b.tile(i, j).value()) {
+                       return true;
+                   }
+               }
+                if (j > 0) {
+                    if (b.tile(i, j - 1).value() ==
+                            b.tile(i, j).value()) {
+                        return true;
+                    }
+                    if (j < board_size - 1 &&
+                            b.tile(i, j + 1).value() ==
+                                    b.tile(i, j).value()) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
