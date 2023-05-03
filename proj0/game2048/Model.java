@@ -115,13 +115,24 @@ public class Model extends Observable {
         if (side == Side.NORTH) {
             // move every column
             for (int col = 0; col < board.size(); col++) {
-                if (moveTile(col)) {
-                    changed = true;
+                if (moveTileUp(col)) {
                     // if at least one of these columns moved,
                     // set 'changed' to true
+                    changed = true;
                 }
             }
+        } else {
+            board.setViewingPerspective(side);
+            for (int col = 0; col < board.size(); col++) {
+                if (moveTileUp(col)) {
+                    // if at least one of these columns moved,
+                    // set 'changed' to true
+                    changed = true;
+                }
+            }
+            board.setViewingPerspective(Side.NORTH);
         }
+
         checkGameOver();
         if (changed) {
             setChanged();
@@ -130,7 +141,7 @@ public class Model extends Observable {
     }
 
     /** move one column */
-    public boolean moveTile(int column_order) {
+    public boolean moveTileUp(int column_order) {
         // first, move all tiles to top
         boolean moved = moveToTop(column_order);
 
@@ -187,12 +198,17 @@ public class Model extends Observable {
      */
     public boolean moveToTop(int column_order) {
         boolean moved = false;
-        for (int row = board.size() - 1; row >= 1; row--) {
-            if (board.tile(column_order, row) == null &&
-                    board.tile(column_order, row - 1) != null) {
-                board.move(column_order, row, board.tile(column_order, row - 1));
-                // tiles were moved in first step
-                moved = true;
+        // we move a lower tile to its adjacent null tile for 'board.size() - 1' times
+        // to ensure that the lowest tile can be moved to the highest (for row 0 to row 3)
+        for (int step = 0; step < board.size() -1; step++) {
+            for (int row = board.size() - 1; row >= 1; row--) {
+                if (board.tile(column_order, row) == null &&
+                        board.tile(column_order, row - 1) != null) {
+                    // move a lower tile to its adjacent null tile
+                    board.move(column_order, row, board.tile(column_order, row - 1));
+                    // tiles were moved in first step
+                    moved = true;
+                }
             }
         }
         return moved;
