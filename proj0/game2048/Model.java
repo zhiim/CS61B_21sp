@@ -110,15 +110,92 @@ public class Model extends Observable {
         boolean changed;
         changed = false;
 
-        // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        if (side == Side.NORTH) {
+            // move every column
+            for (int col = 0; col < board.size(); col++) {
+                if (moveTile(col)) {
+                    changed = true;
+                    // if at least one of these columns moved,
+                    // set 'changed' to true
+                }
+            }
+        }
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
+    }
+
+    /** move one column */
+    public boolean moveTile(int column_order) {
+        // first, move all tiles to top
+        boolean moved = moveToTop(column_order);
+
+        // second, merge tiles with same value
+        if (board.tile(column_order, 3) != null) {
+            if (board.tile(column_order, 2) != null) {
+                // if row 3 and row 2 have the same value
+                if (board.tile(column_order, 2).value() ==
+                        board.tile(column_order, 3).value()) {
+                    board.move(column_order, 3, board.tile(column_order, 2));
+                    score += board.tile(column_order, 3).value();
+                    moved = true;
+                    // we should also consider the situation that row 1 = row 0
+                    if (board.tile(column_order, 1) != null) {
+                        if (board.tile(column_order, 0) != null &&
+                        board.tile(column_order, 0).value() == board.tile(column_order, 1).value()) {
+                            board.move(column_order, 1, board.tile(column_order, 0));
+                            score += board.tile(column_order, 1).value();
+                            board.move(column_order, 2, board.tile(column_order, 1));
+                        }
+                    }
+                    // after merge tiles, move tiles to top
+                    moveToTop(column_order);
+                } else {
+                    if (board.tile(column_order, 1) != null) {
+                        // if row 3 != row 2 but row 1 = row 2
+                        if (board.tile(column_order, 1).value() ==
+                        board.tile(column_order, 2).value()) {
+                            board.move(column_order, 2, board.tile(column_order, 1));
+                            score += board.tile(column_order, 2).value();
+                            moved = true;
+                            moveToTop(column_order);
+                        } else {
+                            // if row 2 != row 3 and row 1 != row 2, but row 0 = row 1
+                            if (board.tile(column_order, 0) != null &&
+                            board.tile(column_order, 0).value() == board.tile(column_order, 1).value()) {
+                                board.move(column_order, 1, board.tile(column_order, 0));
+                                score += board.tile(column_order, 1).value();
+                                moved = true;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        return moved;
+    }
+
+    /**
+     * move tiles in column 'column_order' to top
+     * @param column_order order of column we want to operate
+     * @return whether tiles moving happened
+     */
+    public boolean moveToTop(int column_order) {
+        boolean moved = false;
+        for (int row = board.size() - 1; row >= 1; row--) {
+            if (board.tile(column_order, row) == null &&
+                    board.tile(column_order, row - 1) != null) {
+                board.move(column_order, row, board.tile(column_order, row - 1));
+                // tiles were moved in first step
+                moved = true;
+            }
+        }
+        return moved;
     }
 
     /** Checks if the game is over and sets the gameOver variable
