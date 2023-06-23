@@ -11,6 +11,9 @@ public class IntListExercises {
     public static void addConstant(IntList lst, int c) {
         IntList head = lst;
         while (true){
+            if (head == null) {
+                break;
+            }
             head.first += c;
             if (head.rest == null) {  // bug fixed
                 break;
