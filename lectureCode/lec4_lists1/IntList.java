@@ -15,7 +15,7 @@ public class IntList {
 		if (rest == null) {
 			return 1;
 		}
-		return 1 + this.rest.size();
+		return 1 + this.rest.size();  // must use this in this recursion
 	}
 
 	/** Return the size of the list using no recursion! */
