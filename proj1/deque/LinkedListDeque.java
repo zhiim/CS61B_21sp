@@ -1,7 +1,6 @@
 package deque;
 
 import java.util.Iterator;
-import java.util.Objects;
 
 /**
  * A double linked list implemented with the circular sentinel topology
@@ -205,14 +204,22 @@ public class LinkedListDeque<T> implements Deque<T>,Iterable<T>{
      */
     @Override
     public boolean equals(Object o) {
-        if (o instanceof LinkedListDeque list) {
-            if (size != list.size) {
-                return false;
-            }
-            // whether items contained in all nodes are same
-            return itemsEqual(list);
+        if (o == null) {
+            return false;
         }
-        return false;
+        if (this == o) {
+            return true;
+        }
+        if (this.getClass() != o.getClass()) {
+            return false;
+        }
+
+        LinkedListDeque<T> comparedList = (LinkedListDeque<T>) o;
+        if (size != comparedList.size) {
+            return false;
+        }
+        // whether items contained in all nodes are same
+        return itemsEqual(comparedList);
     }
 
     /**
