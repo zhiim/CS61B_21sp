@@ -2,6 +2,9 @@ package deque;
 
 import jh61b.junit.In;
 import org.junit.Test;
+
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 
 // TODO: random test
@@ -122,6 +125,9 @@ public class LinkedListDequeTest {
         }
     }
 
+    /**
+     * This function is used to test the used defined equals() function
+     */
     @Test
     public void equalTest() {
         LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
@@ -131,5 +137,43 @@ public class LinkedListDequeTest {
             lld2.addFirst(i);
         }
         assertTrue(lld1.equals(lld2));
+
+        // test for non equal
+        lld2.addFirst(0);
+        assertFalse(lld1.equals(lld2));
     }
+
+    /**
+     * This function is used to test the iteration of LinkedListDeque
+     */
+    @Test
+    public void iteratorTest() {
+        LinkedListDeque<String> lld = new LinkedListDeque<>();
+        lld.addLast("a");
+        lld.addLast("b");
+        lld.addLast("c");
+        String str = "abc";
+        // StringBuilder used to efficiently build a string from
+        // substrings
+        StringBuilder strTest = new StringBuilder();
+        for (String s : lld) {
+            strTest.append(s);
+        }
+        String strT = strTest.toString();
+        assertEquals(str, strT);
+    }
+
+    @Test
+    public void testGetRecursive() {
+        LinkedListDeque<Integer> lld = new LinkedListDeque<>();
+        lld.addFirst(1);
+        lld.addLast(2);
+        lld.addLast(3);
+        lld.addLast(4);
+        assertEquals(1, (int) lld.getRecursive(0));
+        assertEquals(4, (int) lld.getRecursive(3));
+        assertEquals(3, (int) lld.getRecursive(2));
+        assertNull(lld.getRecursive(4));
+    }
+
 }

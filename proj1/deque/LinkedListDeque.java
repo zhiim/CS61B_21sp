@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * A double linked list implemented with the circular sentinel topology
  */
-public class LinkedListDeque<T> implements Iterable<T> {
+public class LinkedListDeque<T> implements Deque<T>,Iterable<T>{
     private int size;  // size of this list
     private ObNode sentinel;
 
@@ -46,6 +46,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
      * This function add a node before the first node of list
      * @param item the item contained in the new node
      */
+    @Override
     public void addFirst(T item) {
         // add a new node right before the first node
         sentinel.next.previous = new ObNode(item, sentinel, sentinel.next);
@@ -58,6 +59,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
      * This function add a node to the end of list
      * @param item item contained in the new node
      */
+    @Override
     public void addLast(T item) {
         // add a new node behind the formerly last node
         sentinel.previous.next = new ObNode(item, sentinel.previous, sentinel);
@@ -70,6 +72,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
      * This function check whether this list is empty
      * @return true if this list is empty, otherwise false
      */
+    @Override
     public boolean isEmpty() {
         return (size == 0);
     }
@@ -78,6 +81,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
      * This function return the size of this list
      * @return number of nodes in this list
      */
+    @Override
     public int size() {
         return size;
     }
@@ -85,6 +89,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
     /**
      * This function print the item of each node one by one
      */
+    @Override
     public void printDeque() {
         ObNode p = sentinel;
         do {
@@ -103,6 +108,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
      * @return the item contained by the first node. if is a empty node,
      * just return null
      */
+    @Override
     public T removeFirst() {
         if (size == 0) {
             return null;
@@ -122,6 +128,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
      * @return return the item contained by the last node.
      * return null if this list is empty
      */
+    @Override
     public T removeLast() {
         if (size == 0) {
             return null;
@@ -136,13 +143,14 @@ public class LinkedListDeque<T> implements Iterable<T> {
     }
 
     /**
-     * Thist function return item contained in the indexed node
+     * This function return item contained in the indexed node
      * @param index the index used to reach node
      * @return item contained in the indexed node. Return null if
      * the index bigger than list size
      */
+    @Override
     public T get(int index) {
-        if (index > size + 1) {
+        if (index + 1> size) {
             return null;
         }
         ObNode p = sentinel;
@@ -150,6 +158,22 @@ public class LinkedListDeque<T> implements Iterable<T> {
             p = p.next;
         }
         return p.item;
+    }
+
+    public T getRecursive(int index) {
+        if (index + 1> size) {
+            return null;
+        }
+        return getRecursiveHelper(sentinel.next, index);
+    }
+
+    private T getRecursiveHelper(ObNode p, int counter) {
+        // base case: if counter = 0, we get to the wanted node
+        if (counter == 0) {
+            return p.item;
+        }
+        // recursive case
+        return getRecursiveHelper(p.next, counter - 1);
     }
 
     private class LLDequeIterator implements Iterator<T> {
@@ -176,10 +200,10 @@ public class LinkedListDeque<T> implements Iterable<T> {
         return new LLDequeIterator();
     }
 
-    @Override
     /**
      * This function is an overwrite of default equals() function
      */
+    @Override
     public boolean equals(Object o) {
         if (o instanceof LinkedListDeque list) {
             if (size != list.size) {
@@ -192,7 +216,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
     }
 
     /**
-     * This function is used to determine whether two list have
+     * This helper function is used to determine whether two list have
      * the same content and order
      * @param o the list used to compare with this list
      * @return true if two list have same content at same order,
