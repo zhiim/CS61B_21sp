@@ -5,8 +5,15 @@ public interface Deque<T> {
     public void addFirst(T item);
     // Add item from the end of list
     public void addLast(T item);
-    // Whether this list is empty or not
-    public boolean isEmpty();
+
+    /**
+     * This function check whether this list is empty
+     * @return true if this list is empty, otherwise false
+     */
+    default boolean isEmpty() {
+        return size() == 0;
+    }
+
     // Get number of items in this list
     public int size();
     // Print out items in this list
