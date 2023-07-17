@@ -18,6 +18,19 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /**
+     * Initiate the deque with an array of size "capacity"
+     * @param capacity the size fo array "items"
+     */
+    public ArrayDeque(int capacity) {
+        items = (T[]) new Object[capacity]; // Create a generic array
+        // Elements add by addFirst should be added to the end part of "items",
+        // because we think this array "item" is a circular array
+        nextFirst = capacity - 1;
+        nextLast=0;
+        size = 0;
+    }
+
+    /**
      * This function is used to create a longer array to replace
      * the older array "items"
      * @param newSize the length of the new array
@@ -125,7 +138,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     /**
      * This function is used to remove the first element from the array "items",
-     * when there are only elements exit in the start part ot "items"
+     * when there are only elements exist in the start part ot "items"
      */
     private void removeFirstElementOfItems() {
         // create a new array with the same size
@@ -148,7 +161,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         T returnValue;
         // if no element added by addLast(), then remove element added by addFirst()
         if (nextLast == 0) {
-            returnValue = items[nextFirst + 1];
+            returnValue = items[size - 1];
+            removeLastElementOfItems();
             nextFirst++;
         }else {
             // else if there are elements added by addFirst()
@@ -163,6 +177,18 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             resize(items.length / 2);
         }
         return returnValue;
+    }
+
+    /**
+     * This function is used to remove the last element from the array "items",
+     * when there are only elements exist in the end part ot "items"
+     */
+    private void removeLastElementOfItems() {
+        // create a new array with the same size
+        T[] newArray = (T[]) new Object[items.length];
+        // copy elements expect the last item to the new array
+        System.arraycopy(items, nextFirst + 1, newArray, nextFirst + 2, size - 1);
+        items = newArray;
     }
 
     /**
