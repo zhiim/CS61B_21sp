@@ -201,7 +201,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     private class ADIterator implements Iterator<T> {
         private int wizPos;
-        public ADIterator() {
+        ADIterator() {
             wizPos = 0;
         }
         public boolean hasNext() {
@@ -228,13 +228,14 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return true;
         }
 
-        Deque<T> compareList = (Deque<T>) o;
-        if (compareList.size() != size) {
-            return false;
-        }
-        for (int i = 0; i < size; i++) {
-            if (compareList.get(i) != get(i)) {
+        if (o instanceof Deque compareList) {
+            if (compareList.size() != size) {
                 return false;
+            }
+            for (int i = 0; i < size; i++) {
+                if (compareList.get(i) != get(i)) {
+                    return false;
+                }
             }
         }
         return true;

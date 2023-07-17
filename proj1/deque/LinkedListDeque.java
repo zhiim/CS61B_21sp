@@ -11,9 +11,9 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     // define the Node class to contain objects and point
     private class ObNode {
-        public T item;  // item contained in this node
-        public ObNode previous;
-        public ObNode next;
+        T item;  // item contained in this node
+        ObNode previous;
+        ObNode next;
 
         ObNode() {
             item = null;
@@ -196,13 +196,14 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             return true;
         }
 
-        Deque<T> compareList = (Deque<T>) o;
-        if (compareList.size() != size) {
-            return false;
-        }
-        for (int i = 0; i < size; i++) {
-            if (compareList.get(i) != get(i)) {
+        if (o instanceof Deque compareList) {
+            if (compareList.size() != size) {
                 return false;
+            }
+            for (int i = 0; i < size; i++) {
+                if (compareList.get(i) != get(i)) {
+                    return false;
+                }
             }
         }
         return true;
