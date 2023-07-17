@@ -227,15 +227,16 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (this == o) {
             return true;
         }
-
-        if (o instanceof Deque compareList) {
-            if (compareList.size() != size) {
+        if (o.getClass().getInterfaces()[0] != this.getClass().getInterfaces()[0]) {
+            return false;
+        }
+        Deque<T> compareList = (Deque<T>) o;
+        if (compareList.size() != size) {
+            return false;
+        }
+        for (int i = 0; i < size; i++) {
+            if (compareList.get(i) != get(i)) {
                 return false;
-            }
-            for (int i = 0; i < size; i++) {
-                if (compareList.get(i) != get(i)) {
-                    return false;
-                }
             }
         }
         return true;
