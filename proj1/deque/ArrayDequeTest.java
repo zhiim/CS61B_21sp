@@ -125,11 +125,14 @@ public class ArrayDequeTest {
     public void equalTest() {
         ArrayDeque<Integer> lld1 = new ArrayDeque<>();
         ArrayDeque<Integer> lld2 = new ArrayDeque<>();
+        LinkedListDeque<Integer> lld = new LinkedListDeque<>();
         for (int i = 0; i < 10; i++) {
             lld1.addFirst(i);
             lld2.addFirst(i);
+            lld.addFirst(i);
         }
         assertTrue(lld1.equals(lld2));
+        assertTrue(lld1.equals(lld));
 
         // test for non equal
         lld2.addFirst(0);

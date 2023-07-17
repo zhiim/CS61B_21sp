@@ -13,20 +13,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         // Elements add by addFirst should be added to the end part of "items",
         // cause we think this array "item" is a circular array
         nextFirst = 7;
-        nextLast=0;
-        size = 0;
-    }
-
-    /**
-     * Initiate the deque with an array of size "capacity"
-     * @param capacity the size fo array "items"
-     */
-    public ArrayDeque(int capacity) {
-        items = (T[]) new Object[capacity]; // Create a generic array
-        // Elements add by addFirst should be added to the end part of "items",
-        // because we think this array "item" is a circular array
-        nextFirst = capacity - 1;
-        nextLast=0;
+        nextLast = 0;
         size = 0;
     }
 
@@ -121,7 +108,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             returnValue = items[0];
             removeFirstElementOfItems();
             nextLast--;
-        }else {
+        } else {
             returnValue = items[nextFirst + 1];
             // else if there are elements added by addFirst()
             nextFirst++;
@@ -129,8 +116,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         size--;
 
         // if usage factor less than 25%, reduce the length of "item"
-        if (items.length >= 16 &&
-                size  < items.length * 0.25) {
+        if (items.length >= 16
+                && size  < items.length * 0.25) {
             resize(items.length / 2);
         }
         return returnValue;
@@ -161,10 +148,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         T returnValue;
         // if no element added by addLast(), then remove element added by addFirst()
         if (nextLast == 0) {
-            returnValue = items[size - 1];
+            returnValue = items[items.length - 1];
             removeLastElementOfItems();
             nextFirst++;
-        }else {
+        } else {
             // else if there are elements added by addFirst()
             returnValue = items[nextLast - 1];
             nextLast--;
@@ -172,8 +159,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         size--;
 
         // if usage factor less than 25%, reduce the length of "item"
-        if (items.length >= 16 &&
-                size < items.length * 0.25) {
+        if (items.length >= 16
+                && size < items.length * 0.25) {
             resize(items.length / 2);
         }
         return returnValue;
@@ -240,12 +227,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (this == o) {
             return true;
         }
-        if (this.getClass() != o.getClass()) {
-            return false;
-        }
 
-        ArrayDeque<T> compareList = (ArrayDeque<T>) o;
-        if (compareList.size != size) {
+        Deque<T> compareList = (Deque<T>) o;
+        if (compareList.size() != size) {
             return false;
         }
         for (int i = 0; i < size; i++) {

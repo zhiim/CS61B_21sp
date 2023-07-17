@@ -2,9 +2,9 @@ package deque;
 
 public interface Deque<T> {
     // Add item from the start of list
-    public void addFirst(T item);
+    void addFirst(T item);
     // Add item from the end of list
-    public void addLast(T item);
+    void addLast(T item);
 
     /**
      * This function check whether this list is empty
@@ -15,13 +15,13 @@ public interface Deque<T> {
     }
 
     // Get number of items in this list
-    public int size();
+    int size();
     // Print out items in this list
-    public void printDeque();
+    void printDeque();
     // Remove item from the start of the list
-    public T removeFirst();
+    T removeFirst();
     // Remove item from the end of the list
-    public T removeLast();
+    T removeLast();
     // Get an item based on index
-    public T get(int index);
+    T get(int index);
 }

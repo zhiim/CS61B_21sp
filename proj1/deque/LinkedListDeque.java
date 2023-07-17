@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * A double linked list implemented with the circular sentinel topology
  */
-public class LinkedListDeque<T> implements Deque<T>,Iterable<T>{
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     private int size;  // size of this list
     private ObNode sentinel;
 
@@ -15,14 +15,14 @@ public class LinkedListDeque<T> implements Deque<T>,Iterable<T>{
         public ObNode previous;
         public ObNode next;
 
-        public ObNode() {
+        ObNode() {
             item = null;
             // previous and next all point to self
             previous = this;
             next = this;
         }
 
-        public ObNode(T item, ObNode previous, ObNode next) {
+        ObNode(T item, ObNode previous, ObNode next) {
             this.item = item;
             this.previous = previous;
             this.next = next;
@@ -31,13 +31,6 @@ public class LinkedListDeque<T> implements Deque<T>,Iterable<T>{
 
     public LinkedListDeque() {
         sentinel = new ObNode();
-        size = 0;
-    }
-
-    public LinkedListDeque(T x) {
-        sentinel = new ObNode();
-        sentinel.next = new ObNode(x, sentinel, sentinel);
-        sentinel.previous = sentinel.next;
         size = 0;
     }
 
@@ -141,7 +134,7 @@ public class LinkedListDeque<T> implements Deque<T>,Iterable<T>{
      */
     @Override
     public T get(int index) {
-        if (index + 1> size) {
+        if (index + 1 > size) {
             return null;
         }
         ObNode p = sentinel;
@@ -152,7 +145,7 @@ public class LinkedListDeque<T> implements Deque<T>,Iterable<T>{
     }
 
     public T getRecursive(int index) {
-        if (index + 1> size) {
+        if (index + 1 > size) {
             return null;
         }
         return getRecursiveHelper(sentinel.next, index);
@@ -170,7 +163,7 @@ public class LinkedListDeque<T> implements Deque<T>,Iterable<T>{
     private class LLDequeIterator implements Iterator<T> {
         private int wizPos;
 
-        public LLDequeIterator() {
+        LLDequeIterator() {
             wizPos = 0;
         }
 
@@ -202,31 +195,13 @@ public class LinkedListDeque<T> implements Deque<T>,Iterable<T>{
         if (this == o) {
             return true;
         }
-        if (this.getClass() != o.getClass()) {
+
+        Deque<T> compareList = (Deque<T>) o;
+        if (compareList.size() != size) {
             return false;
         }
-
-        LinkedListDeque<T> comparedList = (LinkedListDeque<T>) o;
-        if (size != comparedList.size) {
-            return false;
-        }
-        // whether items contained in all nodes are same
-        return itemsEqual(comparedList);
-    }
-
-    /**
-     * This helper function is used to determine whether two list have
-     * the same content and order
-     * @param o the list used to compare with this list
-     * @return true if two list have same content at same order,
-     * false otherwise
-     */
-    private boolean itemsEqual(LinkedListDeque<T> o) {
-        ObNode p = sentinel;
-        ObNode po = o.sentinel;
         for (int i = 0; i < size; i++) {
-            p = p.next; po = po.next;
-            if (p.item != po.item) {
+            if (compareList.get(i) != get(i)) {
                 return false;
             }
         }
