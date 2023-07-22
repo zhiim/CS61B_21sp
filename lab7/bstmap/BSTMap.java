@@ -13,8 +13,8 @@ import java.util.Set;
  * @param <V> Value paired with key
  */
 public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
-    int size;
-    BSTNode root;
+    private int size;
+    private BSTNode root;
 
     /**
      * Node is used to store Key-Value pair of each tree node,
@@ -69,6 +69,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (size == 0) {
             return null;
         }
+        if (key == null) {
+            return null;
+        }
         return searchNode(key, this.root);
     }
 
@@ -113,6 +116,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (size == 0) {
             this.root = new BSTNode(key, value, null, null);
             this.size++;
+            return;
+        }
+        if (key == null || value == null) {
             return;
         }
         insertNode(key, value, this.root);
