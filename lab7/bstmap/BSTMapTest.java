@@ -12,11 +12,13 @@ public class BSTMapTest {
         map.put("r", 3);
         // add an duplicate node
         map.put("b", 4);
+        map.put("j", null);
         // get
         System.out.println(map.get("z"));
         System.out.println(map.get("a"));
         System.out.println(map.containsKey("a"));
         System.out.println(map.containsKey("b"));
+        System.out.println(map.containsKey("j"));
         map.printInOrder();
     }
 }

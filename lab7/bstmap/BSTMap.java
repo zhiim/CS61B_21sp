@@ -55,7 +55,28 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public boolean containsKey(K key) {
-        return get(key) != null;
+        return searchContain(key, this.root);
+    }
+
+    private boolean searchContain(K key, BSTNode root) {
+        // base case: if find the node with same key, or reach out to leaves
+        // if root == null should be checked before compareTo() function
+        if (root == null) {
+            return false;
+        }
+        if (key.compareTo(root.key) == 0) {
+            return true;
+        }
+
+        // recursive case: if key < root.key, search in root's sub-left tree,
+        // else search in root's sub-right tree
+        if (key.compareTo(root.key) < 0) {
+            return searchContain(key, root.left);
+        }else if (key.compareTo(root.key) > 0) {
+            return searchContain(key, root.right);
+        }
+
+        return false;
     }
 
     /**
@@ -118,7 +139,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             this.size++;
             return;
         }
-        if (key == null || value == null) {
+        if (key == null) {
             return;
         }
         insertNode(key, value, this.root);
